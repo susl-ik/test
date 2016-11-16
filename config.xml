@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml>
+	<global>
+	<limit>15000</limit>
+	</global>
+	<printers>
+		<printer>
+			<id>pko</id>
+			<ip>10.242.17.11</ip>
+			<last>1272202</last>
+		<lasttime>2016-11-16 13:18:22</lasttime>
+		<lastControlCount>1263724</lastControlCount>
+		<lastControlTime>2016-10-31 08:00:00</lastControlTime>
+	</printer>
+		<printer>
+			<id>sbit</id>
+			<ip>10.242.17.8</ip>
+			<last>468784</last>
+		<lasttime>2016-11-16 13:18:22</lasttime>
+		<lastControlCount>465300</lastControlCount>
+		<lastControlTime>2016-10-31 08:00:00</lastControlTime>
+	</printer>
+	</printers>
+</xml>
