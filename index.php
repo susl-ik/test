@@ -1,11 +1,13 @@
 <?php
-//error_reporting(0);
+error_reporting(0);
 header ("Content-Type: text/html; charset=utf-8");
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+//ini_set('error_reporting', E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+date_default_timezone_set("Europe/Kiev"); 
 
 header ("Content-Type: text/html; charset=utf-8");
+//mail("e.gavrilenko@dkhz.com.ua", "My Subject", "Line 1\nLine 2\nLine 3");
 //phpinfo();
 //var $info1, $info2;
 
@@ -32,6 +34,7 @@ snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 $xml = simplexml_load_file('config.xml');
    // print_r($xml);
 
+$message="";
 foreach($xml->printers->printer as $printer) {
 	echo('<div class="panel panel-primary">
   	<div class="panel-heading"><span class="glyphicon glyphicon-print"></span>');
@@ -43,6 +46,7 @@ foreach($xml->printers->printer as $printer) {
 	echo "<div>control count: <span class=\"badge\">".$printer->lastControlCount."</span></div>";
 	$info =  (int) snmpget($ip, "private", ".1.3.6.1.4.1.18334.1.1.1.5.7.2.1.1.0");
 	echo "<div>current count: <span class=\"badge\">".$info."</span></div>";
+	$message=$message."minolta ".$printer->id." ".$info."\n";
 	//echo "type: ".gettype($info)."</br>";
 	$lastdelta=$info-$printer->last;
 //	echo "last delta: ".$lastdelta."</br>";
@@ -74,4 +78,7 @@ $xml->asXML('config.xml');
 //echo "minolta pko  current counter: ".$info2."</br>";
 echo "</div></body>
 </html>";
+//mail("i.zhulkowsky@dkhz.com.ua", "DKHZ - Minolta counters", $message,
+// "From: webmaster@$SERVER_NAME");
+fff
 ?>
