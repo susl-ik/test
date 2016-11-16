@@ -80,5 +80,4 @@ echo "</div></body>
 </html>";
 //mail("i.zhulkowsky@dkhz.com.ua", "DKHZ - Minolta counters", $message,
 // "From: webmaster@$SERVER_NAME");
-fff
 ?>
