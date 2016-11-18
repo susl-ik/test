@@ -2,21 +2,29 @@
 <xml>
 	<global>
 	<limit>15000</limit>
+	<defaultTo>e.gavrilenko@dkhz.com.ua</defaultTo>
+	<defaultFrom>e.gavrilenko@dkhz.com.ua</defaultFrom>
+	<defaultCc>e.gavrilenko@dkhz.com.ua</defaultCc>
+	<defaultSubject>Minoltas counters report from DKHZ</defaultSubject>
 	</global>
 	<printers>
 		<printer>
 			<id>pko</id>
+			<model>Bizhub 222</model>
+			<serial>021011823</serial>
 			<ip>10.242.17.11</ip>
-			<last>1272202</last>
-		<lasttime>2016-11-16 13:18:22</lasttime>
+			<last>1273600</last>
+		<lasttime>2016-11-18 14:06:50</lasttime>
 		<lastControlCount>1263724</lastControlCount>
 		<lastControlTime>2016-10-31 08:00:00</lastControlTime>
 	</printer>
 		<printer>
 			<id>sbit</id>
+			<model>Bizhub 222</model>
+			<serial>021014914</serial>
 			<ip>10.242.17.8</ip>
-			<last>468784</last>
-		<lasttime>2016-11-16 13:18:22</lasttime>
+			<last>469050</last>
+		<lasttime>2016-11-18 14:06:50</lasttime>
 		<lastControlCount>465300</lastControlCount>
 		<lastControlTime>2016-10-31 08:00:00</lastControlTime>
 	</printer>

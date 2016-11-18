@@ -5,7 +5,7 @@ echo('
 <ul class="nav nav-pills">
   <li class="active"><a href="index.php">Status</a></li>
   <li><a href="send.php">Send report</a></li>
-  <li><a href="#">Config</a></li>
+  <li><a href="config.php">Config</a></li>
 </ul>
 ');
 ?>

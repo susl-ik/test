@@ -46,12 +46,29 @@ $runtime = date("Y-m-d H:i:s");
 echo ("<div class=\"page-header\">
   <h2>Sending report<small></small></h2></div>");
 
+$xml = simplexml_load_file('config.xml');
 
 
-$default_maito = "e.gavrilenko@dkhz.com.ua";
+$default_from = $xml->global->defaultFrom;
+$default_maito = $xml->global->defaultTo;
+$default_cc = $xml->global->defaultCc;
+$default_subject = $xml->global->defaultSubject;;
+$default_message = "Отчет ПАО \"ЕВРАЗ Днепродзержинский КХЗ\" \r\ndate: $runtime \r\n";
+
+$info = [];
+foreach($xml->printers->printer as $printer) {
+	$ip = $printer->ip;
+	$serial = $printer->serial;
+	$model = $printer->model;
+	$info["$serial"] =  (int) snmpget($ip, "private", ".1.3.6.1.4.1.18334.1.1.1.5.7.2.1.1.0");
+	$default_message .= $model.'	serial: '.$serial.'	current counter: '.$info["$serial"]."\r\n";
+}
+/*
 $default_from = "e.gavrilenko@dkhz.com.ua";
+$default_maito = "e.gavrilenko@dkhz.com.ua";
+$default_cc = "e.gavrilenko@dkhz.com.ua";
 $default_subject = "Minoltas counters report from DKHZ";
-$default_message = "message";
+$default_message = "message";*/
 
 
 
@@ -60,10 +77,12 @@ $default_message = "message";
  	
  	
 
+ 	
+ 	$headers = 'From: '.htmlspecialchars($_POST['from'])."\r\n"."Cc: ".htmlspecialchars($_POST['cc'])."\r\n".'X-Mailer: PHP/'.phpversion();
  	$to = htmlspecialchars($_POST['mailto']);
- 	$headers = 'From: '.htmlspecialchars($_POST['from'])."\r\n".'X-Mailer: PHP/'.phpversion();
  	$subject = htmlspecialchars($_POST['subject']);
  	$message = htmlspecialchars($_POST['massage']);
+	
 	
 	/*echo($to);
 	echo($headers);
@@ -75,6 +94,18 @@ $default_message = "message";
 	} else {
 	echo ('<div class="alert alert-danger">Error!</div>');	
 	}
+
+	$save = htmlspecialchars($_POST['save']);
+	
+	
+	/* //save control counters
+	if ($save == "on") {
+		foreach($xml->printers->printer as $printer) {
+				$printer->lastControlCount=$info["$printer->serial"];
+				$printer->lastControlTime=$runtime;
+		}
+	$xml->asXML('config.xml');
+	} //*/
 
 	 /*
 	$to      = 'e.gavrilenko@dkhz.com.ua';
@@ -89,6 +120,15 @@ $default_message = "message";
 
  	echo('
 	<form action="send.php" method="post" class="form-group">
+
+
+ 	 <div class="form-group">
+    <label for="from">from</label>
+    <input type="text" class="form-control" id="from" placeholder="from" name="from" value="');
+    echo($default_from);
+    echo('">
+  	</div>
+
     <div class="form-group">
     <label for="mailto">mailt to</label>
     <input type="text" class="form-control" id="inputEmail" placeholder="email" name="mailto" value="');
@@ -96,10 +136,10 @@ $default_message = "message";
     echo('">
   	</div>
 
- 	 <div class="form-group">
-    <label for="from">from</label>
-    <input type="text" class="form-control" id="from" placeholder="from" name="from" value="');
-    echo($default_from);
+    <div class="form-group">
+    <label for="cc">copy</label>
+    <input type="text" class="form-control" id="cc" placeholder="email" name="cc" value="');
+    echo($default_cc);
     echo('">
   	</div>
 
@@ -119,7 +159,7 @@ $default_message = "message";
 
   	<div class="checkbox">
     <label>
-      <input type="checkbox" name="save"checked>Save counters to config</input>
+      <input type="checkbox" name="save"checked>Save date and counters to config as control</input>
     </label>
   	</div>
 
