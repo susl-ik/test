@@ -1,28 +1,46 @@
 <?php
+//start
 error_reporting(0);
-header ("Content-Type: text/html; charset=utf-8");
+//header ("Content-Type: text/html; charset=utf-8");
 //ini_set('error_reporting', E_ALL);
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 date_default_timezone_set("Europe/Kiev"); 
-
-header ("Content-Type: text/html; charset=utf-8");
+snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
+//header ("Content-Type: text/html; charset=utf-8");
 //mail("e.gavrilenko@dkhz.com.ua", "My Subject", "Line 1\nLine 2\nLine 3");
 //phpinfo();
 //var $info1, $info2;
 
 
-echo "<!DOCTYPE html>
-<html>
-<head>
-<link rel=\"stylesheet\" href=\"css/bootstrap.min.css\">
-<link rel=\"stylesheet\" href=\"css/bootstrap-theme.min.css\"> 
-<script src=\"js/bootstrap.min.js\"></script> 
-<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">
-<title>print</title>
-</head>
-<body style=\"background: url(fon.png) top left repeat-x\">
-<div class=\"container\">";
+echo (	//head
+	'<!DOCTYPE html>
+	<html lang="en">
+  	<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>print</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesnt work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  	</head>'
+	);
+
+echo ( //body
+	'<body>
+	<div class="container">
+    <!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>'
+	);
 
 $runtime = date("Y-m-d H:i:s");
 echo ("<div class=\"page-header\">
@@ -30,7 +48,7 @@ echo ("<div class=\"page-header\">
 //echo "type: ".gettype($runtime)."</br>";
 
 
-snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
+
 $xml = simplexml_load_file('config.xml');
    // print_r($xml);
 
@@ -74,10 +92,9 @@ foreach($xml->printers->printer as $printer) {
 $xml->asXML('config.xml');
 
 
-//echo "minolta sbit current counter: ".$info1."</br>";
-//echo "minolta pko  current counter: ".$info2."</br>";
-echo "</div></body>
-</html>";
-//mail("i.zhulkowsky@dkhz.com.ua", "DKHZ - Minolta counters", $message,
-// "From: webmaster@$SERVER_NAME");
+echo( //end
+	'<div>
+	</body>
+	</html>'
+	);
 ?>
