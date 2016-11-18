@@ -41,7 +41,16 @@ echo ( //body
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>'
 	);
-include('nav.php');
+
+echo( //nav
+'<div class=\"page-header\">
+<h1>minolta bizhub 222 control<small></small></h1></div>
+<ul class="nav nav-pills">
+  <li class="active"><a href="index.php">Status</a></li>
+  <li><a href="send.php">Send report</a></li>
+  <li><a href="config.php">Config</a></li>
+</ul>');
+
 $runtime = date("Y-m-d H:i:s");
 echo ("<div class=\"page-header\">
   <h2>date: <small>".$runtime."</small></h2></div>");

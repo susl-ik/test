@@ -41,140 +41,76 @@ echo ( //body
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>'
 	);
-echo('
-<div class=\"page-header\">
+
+echo( //nav
+'<div class=\"page-header\">
 <h1>minolta bizhub 222 control<small></small></h1></div>
 <ul class="nav nav-pills">
   <li><a href="index.php">Status</a></li>
-  <li class="active"><a href="send.php">Send report</a></li>
-  <li><a href="config.php">Config</a></li>
-</ul>
-');
+  <li><a href="send.php">Send report</a></li>
+  <li class="active"><a href="config.php">Config</a></li>
+</ul>');
+
 $runtime = date("Y-m-d H:i:s");
 echo ("<div class=\"page-header\">
-  <h2>Sending report<small></small></h2></div>");
+  <h2>Configuration<small></small></h2></div>");
 
 $xml = simplexml_load_file('config.xml');
 
 
+
+
+ if (!empty($_POST)) {
+ 	 if (isset($_POST['from'])) $xml->global->defaultFrom=htmlspecialchars($_POST['from']);
+ 	 if (isset($_POST['mailto'])) $xml->global->defaultTo=htmlspecialchars($_POST['mailto']);
+ 	 if (isset($_POST['cc'])) $xml->global->defaultCc=htmlspecialchars($_POST['cc']);
+ 	 if (isset($_POST['subject'])) $xml->global->defaultSubject=htmlspecialchars($_POST['subject']);
+ 	
+	$xml->asXML('config.xml');
+	echo ('<div class="alert alert-success">Well done!</div>');
+ } 
+
 $default_from = $xml->global->defaultFrom;
 $default_maito = $xml->global->defaultTo;
 $default_cc = $xml->global->defaultCc;
-$default_subject = $xml->global->defaultSubject;;
-$default_message = "Отчет ПАО \"ЕВРАЗ Днепродзержинский КХЗ\" \r\ndate: $runtime \r\n";
-
-$info = [];
-foreach($xml->printers->printer as $printer) {
-	$ip = $printer->ip;
-	$serial = $printer->serial;
-	$model = $printer->model;
-	$info["$serial"] =  (int) snmpget($ip, "private", ".1.3.6.1.4.1.18334.1.1.1.5.7.2.1.1.0");
-	$default_message .= $model.'	serial: '.$serial.'	current counter: '.$info["$serial"]."\r\n";
-}
-/*
-$default_from = "e.gavrilenko@dkhz.com.ua";
-$default_maito = "e.gavrilenko@dkhz.com.ua";
-$default_cc = "e.gavrilenko@dkhz.com.ua";
-$default_subject = "Minoltas counters report from DKHZ";
-$default_message = "message";*/
-
-
-
-
- if (isset($_POST['mailto'])) {
- 	
- 	
-
- 	
- 	$headers = 'From: '.htmlspecialchars($_POST['from'])."\r\n"."Cc: ".htmlspecialchars($_POST['cc'])."\r\n".'X-Mailer: PHP/'.phpversion();
- 	$to = htmlspecialchars($_POST['mailto']);
- 	$subject = htmlspecialchars($_POST['subject']);
- 	$message = htmlspecialchars($_POST['massage']);
-	
-	
-	/*echo($to);
-	echo($headers);
-	echo($subject);
-	echo($message);*/
- 
-	if (mail($to, $subject, $message, $headers)) {
-	echo ('<div class="alert alert-success">Well done! You successfully sent mail.</div>');
-	} else {
-	echo ('<div class="alert alert-danger">Error!</div>');	
-	}
-
-	$save = htmlspecialchars($_POST['save']);
-	
-	
-	/* save control counters
-	if ($save == "on") {
-		foreach($xml->printers->printer as $printer) {
-				$printer->lastControlCount=$info["$printer->serial"];
-				$printer->lastControlTime=$runtime;
-		}
-	$xml->asXML('config.xml');
-	} // */
-
-	 /*
-	$to      = 'e.gavrilenko@dkhz.com.ua';
-	$subject = 'the subject';
-	$message = 'hello';
-	$headers = 'From: noreply@example.com'."\r\n".'Reply-To: webmaster@example.com'."\r\n".'X-Mailer: PHP/'.phpversion();
-
-	mail($to, $subject, $message, $headers);
-
-	*/
- } else {
+$default_subject = $xml->global->defaultSubject;
 
  	echo('
-	<form action="send.php" method="post" class="form-group">
+	<form action="config.php" method="post" class="form-group">
 
 
  	 <div class="form-group">
-    <label for="from">from</label>
+    <label for="from">set default from</label>
     <input type="text" class="form-control" id="from" placeholder="from" name="from" value="');
     echo($default_from);
     echo('">
   	</div>
 
     <div class="form-group">
-    <label for="mailto">mailt to</label>
+    <label for="mailto">set default mailt to</label>
     <input type="text" class="form-control" id="inputEmail" placeholder="email" name="mailto" value="');
     echo($default_maito);
     echo('">
   	</div>
 
     <div class="form-group">
-    <label for="cc">copy</label>
+    <label for="cc">set default Cc:</label>
     <input type="text" class="form-control" id="cc" placeholder="email" name="cc" value="');
     echo($default_cc);
     echo('">
   	</div>
 
  	 <div class="form-group">
-    <label for="subject">subject</label>
+    <label for="subject">set default subject</label>
     <input type="text" class="form-control" id="subject" placeholder="subject" name="subject" value="');
     echo($default_subject);
     echo('">
   	</div>
 
-	<div class="form-group">
-	<label for="Message">Message</label>
-	<textarea name="massage" class="form-control" id="Message" rows="3">');
-	echo($default_message);
-	echo('</textarea>
-	</div>
-
-  	<div class="checkbox">
-    <label>
-      <input type="checkbox" name="save"checked>Save date and counters to config as control</input>
-    </label>
-  	</div>
-
-  	<button type="submit" class="btn btn-default">Submit</button>
+  	<button type="submit" class="btn btn-default">Save</button>
     </form>
 	');
-	}
+
 
 /* ALL POST
  echo "<br>POST<br>";
