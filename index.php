@@ -1,10 +1,10 @@
 <?php
 //start
-error_reporting(0);
+//error_reporting(0);
 //header ("Content-Type: text/html; charset=utf-8");
-//ini_set('error_reporting', E_ALL);
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 date_default_timezone_set("Europe/Kiev"); 
 snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 //header ("Content-Type: text/html; charset=utf-8");
@@ -41,10 +41,10 @@ echo ( //body
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="js/bootstrap.min.js"></script>'
 	);
-
+include('nav.php');
 $runtime = date("Y-m-d H:i:s");
 echo ("<div class=\"page-header\">
-  <h1>Инфа по принтерам: <small>".$runtime."</small></h1></div>");
+  <h2>date: <small>".$runtime."</small></h2></div>");
 //echo "type: ".gettype($runtime)."</br>";
 
 
