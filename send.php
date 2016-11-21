@@ -61,16 +61,31 @@ $default_from = $xml->global->defaultFrom;
 $default_maito = $xml->global->defaultTo;
 $default_cc = $xml->global->defaultCc;
 $default_subject = $xml->global->defaultSubject;;
-$default_message = "Отчет ПАО \"ЕВРАЗ Днепродзержинский КХЗ\" \r\ndate: $runtime \r\n";
+$default_message = "Состояние счетчиков печати на ПАО \"ЕВРАЗ Днепродзержинский КХЗ\" \r\n";
+
+$status=TRUE;
+foreach($xml->printers->printer as $printer) {
+  $fp = fsockopen ("$printer->ip", 80, $errno, $errstr, 15);
+  if (!$fp) { $status=FALSE; }
+}
+
 
 $info = [];
+$lasttime=[];
 foreach($xml->printers->printer as $printer) {
 	$ip = $printer->ip;
 	$serial = $printer->serial;
 	$model = $printer->model;
+  if ($status) {
 	$info["$serial"] =  (int) snmpget($ip, "private", ".1.3.6.1.4.1.18334.1.1.1.5.7.2.1.1.0");
-	$default_message .= $model.'	serial: '.$serial.'	current counter: '.$info["$serial"]."\r\n";
+  $lasttime["$serial"] = $runtime;
+  } else {
+  $info["$serial"] = $printer->last;
+  $lasttime["$serial"] = $printer->lasttime;
+  }
+	$default_message .= $model.'   serial: '.$serial.'   current counter: '.$info["$serial"].'     control date: '.$lasttime["$serial"]."\r\n";
 }
+
 /*
 $default_from = "e.gavrilenko@dkhz.com.ua";
 $default_maito = "e.gavrilenko@dkhz.com.ua";
@@ -86,10 +101,11 @@ $default_message = "message";*/
  	
 
  	
- 	$headers = 'From: '.htmlspecialchars($_POST['from'])."\r\n"."Cc: ".htmlspecialchars($_POST['cc'])."\r\n".'X-Mailer: PHP/'.phpversion();
+ 	$headers = 'From: '.htmlspecialchars($_POST['from'])."\r\n"."Cc: ".htmlspecialchars($_POST['cc'])."\r\n"."Content-type: text/plain; charset=UTF-8 \r\n".'X-Mailer: PHP/'.phpversion();
  	$to = htmlspecialchars($_POST['mailto']);
  	$subject = htmlspecialchars($_POST['subject']);
- 	$message = htmlspecialchars($_POST['massage']);
+  $message = $_POST['massage'];
+
 	
 	
 	/*echo($to);
@@ -106,11 +122,11 @@ $default_message = "message";*/
 	$save = htmlspecialchars($_POST['save']);
 	
 	
-	/* save control counters
+	//* save control counters
 	if ($save == "on") {
 		foreach($xml->printers->printer as $printer) {
 				$printer->lastControlCount=$info["$printer->serial"];
-				$printer->lastControlTime=$runtime;
+				$printer->lastControlTime=$lasttime["$printer->serial"];
 		}
 	$xml->asXML('config.xml');
 	} // */

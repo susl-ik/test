@@ -13,8 +13,8 @@
 			<model>Bizhub 222</model>
 			<serial>021011823</serial>
 			<ip>10.242.17.11</ip>
-			<last>1273600</last>
-		<lasttime>2016-11-18 14:53:31</lasttime>
+			<last>1274230</last>
+		<lasttime>2016-11-21 14:44:20</lasttime>
 		<lastControlCount>1263724</lastControlCount>
 		<lastControlTime>2016-10-31 08:00:00</lastControlTime>
 	</printer>
@@ -23,8 +23,8 @@
 			<model>Bizhub 222</model>
 			<serial>021014914</serial>
 			<ip>10.242.17.8</ip>
-			<last>469071</last>
-		<lasttime>2016-11-18 14:53:31</lasttime>
+			<last>469247</last>
+		<lasttime>2016-11-21 14:44:20</lasttime>
 		<lastControlCount>465300</lastControlCount>
 		<lastControlTime>2016-10-31 08:00:00</lastControlTime>
 	</printer>
