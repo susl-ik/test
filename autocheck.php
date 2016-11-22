@@ -11,12 +11,17 @@ $runtime = date("Y-m-d H:i:s");
 $xml = simplexml_load_file('/usr/local/www/apache24/data/minoltas/config.xml');
    // print_r($xml);
 
+$status=TRUE;
+foreach($xml->printers->printer as $printer) {
+  $fp = fsockopen ("$printer->ip", 80, $errno, $errstr, 15);
+  if (!$fp) { $status=FALSE; }
+}
+
 foreach($xml->printers->printer as $printer) {
 
 	$ip = $printer->ip;
 
-	$fp = fsockopen ("$ip", 80, $errno, $errstr, 15);
-	if ($fp) {
+	if ($status) {
 		$info =  (int) snmpget($ip, "private", ".1.3.6.1.4.1.18334.1.1.1.5.7.2.1.1.0");
 		$printer->last=$info;	
 		$printer->lasttime=$runtime;

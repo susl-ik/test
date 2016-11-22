@@ -1,10 +1,10 @@
 <?php
 //start
-//error_reporting(0);
+error_reporting(0);
 //header ("Content-Type: text/html; charset=utf-8");
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+//ini_set('error_reporting', E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
 date_default_timezone_set("Europe/Kiev"); 
 snmp_set_valueretrieval(SNMP_VALUE_PLAIN);
 //header ("Content-Type: text/html; charset=utf-8");
@@ -66,8 +66,9 @@ foreach($xml->printers->printer as $printer) {
   	<div class="panel-heading"><span class="glyphicon glyphicon-print"></span>');
 	//$last=$printer->last;
 	$ip = $printer->ip;
+	$serial = $printer->serial;
 	echo "  minolta ".$printer->id."</div><div class=\"panel-body\">";
-	
+	echo "<div>serial: <span class=\"badge\">".$serial."</span></div>";
 	$fp = fsockopen ("$ip", 80, $errno, $errstr, 15);
 	if (!$fp) {
 		echo ('<div class="alert alert-danger">not available </div>');
@@ -92,7 +93,7 @@ foreach($xml->printers->printer as $printer) {
 		$d2= new DateTime($runtime);
 		$interval = $d1->diff($d2)->format('%R%a дней');
 		echo "interval: ".$interval."</br>";
-		
+		echo("<div>web interface: <a href=\"http://$ip\">http://$ip</a></div>");
 
 		$printer->lasttime=$runtime;
 	}
@@ -101,6 +102,16 @@ foreach($xml->printers->printer as $printer) {
 
 $xml->asXML('config.xml');
 
+echo('
+<div class="panel panel-default">
+  <div class="panel-heading"><span class="glyphicon glyphicon-info-sign"></span> info</div>
+  <div class="panel-body">
+    <p>ОКПО ДКХЗ: 05393085</p>
+    <p>Minolta service: <a href="http://service.konicaminolta.ua/">http://service.konicaminolta.ua/</a></p>
+
+  </div>
+</div>
+	');
 
 echo( //end
 	'<div>
@@ -108,3 +119,4 @@ echo( //end
 	</html>'
 	);
 ?>
+
